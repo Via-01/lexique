@@ -213,6 +213,30 @@
             border: 1px solid rgba(255, 118, 118, 0.2);
             border-radius: 8px;
         }
+
+        /* Customize the scrollbar for the code block container */
+        pre::-webkit-scrollbar {
+            height: 6px; /* Height for the horizontal scrollbar */
+            width: 6px;  /* Width for vertical scrollbar if needed */
+        }
+
+        /* The track (background) of the scrollbar */
+        pre::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        /* The draggable thumb handle */
+        pre::-webkit-scrollbar-thumb {
+            background: rgba(186, 154, 236, 0.3); /* Subtle pastel purple tint */
+            border-radius: 10px;
+            transition: background 0.2s ease;
+        }
+
+        /* Hover effect on the scrollbar handle */
+        pre::-webkit-scrollbar-thumb:hover {
+            background: rgba(186, 154, 236, 0.5); /* Brightens slightly on hover */
+        }
     </style>
 </head>
 <body>
