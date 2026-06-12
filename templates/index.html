@@ -1,369 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lexique</title>
     <style>
-        :root {
-            --bg-color: #0b090c;
-            --card-bg: rgba(22, 18, 28, 0.7);
-            --border-color: rgba(186, 154, 236, 0.15);
-            --text-primary: rgba(255, 255, 255, 0.95);
-            --text-secondary: rgba(230, 220, 245, 0.65);
-            --pastel-purple: #cbb2ed;
-            --pastel-purple-hover: #bda0e6;
-            --code-bg: #120e17;
-            --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
-        }
+      :root {
+      --bg-color: #0b090c;
+      --card-bg: rgba(22, 18, 28, 0.7);
+      --border-color: rgba(186, 154, 236, 0.15);
+      --text-primary: rgba(255, 255, 255, 0.95);
+      --text-secondary: rgba(230, 220, 245, 0.65);
+      --pastel-purple: #cbb2ed;
+      --pastel-purple-hover: #bda0e6;
+      --code-bg: #120e17;
+      --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    body {
+      background: url('/static/bg.png') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 9, 12, 0.38);
+      z-index: -1;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+    h1 {
+      font-size: 2.2rem;
+      color: var(--pastel-purple);
+      margin-bottom: 10px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    
+    p.subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
 
-       body {
-            /* This points to the image you'll save in the /static folder */
-            background: url('/static/bg.png') no-repeat center center fixed;
-            background-size: cover;
-            color: var(--text-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 24px;
-            position: relative;
-        }
+    h3 {
+      color: var(--pastel-purple);
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px; /* Enhanced internal spacing */
+      font-weight: 600;
+    }
+    
+    .explanation-text {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 32px; /* Extra breathing room before next section */
+    }
 
-        /* This creates the dark overlay to make the text pop */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 9, 12, 0.38); /* Darkens the image slightly */
-            z-index: -1;
-        }
+    .output-card {
+      display: none;
+      border-top: 1px solid rgba(186, 154, 236, 0.1);
+      padding-top: 32px;
+      margin-top: 16px;
+      animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        .container {
-            width: 100%;
-            max-width: 680px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 40px;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-        }
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      padding-top: 48px;
+      margin-top: 8px;
+    }
+    
+    code {
+      font-family: var(--font-mono);
+      color: #e2d5f3;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--pastel-purple);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
+    }
+    
+    .copy-btn:hover {
+      background: rgba(203, 178, 237, 0.15);
+      border-color: var(--pastel-purple);
+    }
+    
+    .error-msg {
+      color: #ff7676;
+      font-size: 0.95rem;
+      display: none;
+      margin-top: -16px;
+      margin-bottom: 20px;
+      padding: 10px 14px;
+      background: rgba(255, 118, 118, 0.1);
+      border: 1px solid rgba(255, 118, 118, 0.2);
+      border-radius: 8px;
+    }
 
-        h1 {
-            font-size: 2.2rem;
-            color: var(--pastel-purple);
-            margin-bottom: 10px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
+    pre::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    pre::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 10px;
+    }
+    pre::-webkit-scrollbar-thumb {
+      background: rgba(186, 154, 236, 0.3);
+      border-radius: 10px;
+    }
+    pre::-webkit-scrollbar-thumb:hover {
+      background: rgba(186, 154, 236, 0.5);
+    }
 
-        p.subtitle {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 32px;
-            line-height: 1.5;
-        }
+    /* ==========================================================================
+       DEDICATED DESKTOP ONLY LAYOUT (Screens wider than 600px)
+       ========================================================================== */
+    @media (min-width: 601px) {
+      body {
+        align-items: center;
+        padding: 24px;
+      }
+      
+      .container {
+        width: 650px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 40px;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      }
+      
+      .search-box {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      
+      input {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #fff !important; /* Explicit desktop force */
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      button#submit-btn {
+        background: var(--pastel-purple);
+        color: #0b090c;
+        border: none;
+        border-radius: 10px;
+        padding: 0 28px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .search-box {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 28px;
-        }
+      pre {
+        overflow-x: auto;
+        white-space: pre;
+      }
+    }
 
-        input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 16px 20px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    /* ==========================================================================
+       DEDICATED MOBILE ONLY LAYOUT (Screens 600px and narrower)
+       ========================================================================== */
+    @media (max-width: 600px) {
+      body {
+        align-items: flex-start;
+        padding: 24px 0; 
+      }
 
-        input:focus {
-            border-color: var(--pastel-purple);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 0 4px rgba(203, 178, 237, 0.15);
-        }
+      .container {
+        width: 90% !important; 
+        max-width: 440px !important; 
+        margin: 0 auto; 
+        background: rgba(22, 18, 28, 0.88);
+        border: 1px solid rgba(186, 154, 236, 0.2);
+        border-radius: 20px; 
+        padding: 32px 24px; 
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      }
 
-        button#submit-btn {
-            background: var(--pastel-purple);
-            color: #0b090c;
-            border: none;
-            border-radius: 10px;
-            padding: 0 28px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      h1 {
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+      }
 
-        button#submit-btn:hover {
-            background: var(--pastel-purple-hover);
-            transform: translateY(-1px);
-        }
+      p.subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 28px;
+        line-height: 1.6;
+      }
 
-        button#submit-btn:active {
-            transform: translateY(0);
-        }
+      .search-box {
+        display: flex;
+        flex-direction: column !important;
+        gap: 14px; 
+        margin-bottom: 32px;
+        width: 100%;
+      }
 
-        button#submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+      input {
+        width: 100% !important;
+        padding: 16px;
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        color: #ffffff !important; 
+        -webkit-text-fill-color: #ffffff !important; 
+        border-radius: 10px;
+      }
 
-        .output-card {
-            display: none;
-            border-top: 1px solid rgba(186, 154, 236, 0.1);
-            padding-top: 32px;
-            margin-top: 8px;
-            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
+      /* FIX: Perfectly muted placeholder so the input field feels deep and premium */
+      /* Force muted placeholder strictly on mobile */
+      input::-webkit-input-placeholder {
+        color: rgba(230, 220, 245, 0.25) !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: rgba(230, 220, 245, 0.25) !important;
+      }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+      input::-moz-placeholder {
+        color: rgba(230, 220, 245, 0.25) !important;
+        opacity: 1 !important;
+      }
 
-        h3 {
-            color: var(--pastel-purple);
-            font-size: 1.05rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
+      input::placeholder {
+        color: rgba(230, 220, 245, 0.25) !important;
+        opacity: 1 !important;
+      }
 
-        .explanation-text {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            font-size: 1rem;
-            margin-bottom: 28px;
-        }
+      button#submit-btn {
+        width: 100% !important;
+        padding: 16px;
+        font-size: 1rem;
+        background: var(--pastel-purple);
+        color: #0b090c;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(203, 178, 237, 0.2);
+      }
 
-        .code-container {
-            position: relative;
-            background: var(--code-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            padding-top: 45px; /* Pushes the code down so it never hits the button */
-            margin-top: 8px;
-        }
+      .output-card {
+        padding-top: 28px;
+        margin-top: 12px;
+      }
 
-        pre {
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        code {
-            font-family: var(--font-mono);
-            color: #e2d5f3;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--pastel-purple);
-            border: 1px solid var(--border-color);
-            padding: 6px 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(4px);
-        }
-
-        .copy-btn:hover {
-            background: rgba(203, 178, 237, 0.15);
-            border-color: var(--pastel-purple);
-        }
-
-        .error-msg {
-            color: #ff7676;
-            font-size: 0.95rem;
-            display: none;
-            margin-top: -16px;
-            margin-bottom: 20px;
-            padding: 10px 14px;
-            background: rgba(255, 118, 118, 0.1);
-            border: 1px solid rgba(255, 118, 118, 0.2);
-            border-radius: 8px;
-        }
-
-        /* Customize the scrollbar for the code block container */
-        pre::-webkit-scrollbar {
-            height: 6px; /* Height for the horizontal scrollbar */
-            width: 6px;  /* Width for vertical scrollbar if needed */
-        }
-
-        /* The track (background) of the scrollbar */
-        pre::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
-        }
-
-        /* The draggable thumb handle */
-        pre::-webkit-scrollbar-thumb {
-            background: rgba(186, 154, 236, 0.3); /* Subtle pastel purple tint */
-            border-radius: 10px;
-            transition: background 0.2s ease;
-        }
-
-        /* Hover effect on the scrollbar handle */
-        pre::-webkit-scrollbar-thumb:hover {
-            background: rgba(186, 154, 236, 0.5); /* Brightens slightly on hover */
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 480px) {
-            body {
-                padding: 12px;
-                align-items: flex-start; /* Allows scrolling down if content is long */
-            }
-
-            /* Container scales smoothly on small screens */
-            .container {
-                padding: 20px;
-                width: 100%;
-                border-radius: 16px;
-                margin-top: 20px;
-            }
-
-            h1 {
-                font-size: 2rem; /* Slightly smaller title so it doesn't wrap awkwardly */
-            }
-
-            /* Stack the input box and button vertically on small mobile screens */
-            .search-box {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            input[type="text"] {
-                width: 100%;
-            }
-
-            button {
-                width: 100%;
-                padding: 14px; /* Bigger tap target for thumbs */
-            }
-            
-            /* Ensure code blocks don't break the layout width */
-            pre {
-                padding: 12px;
-                font-size: 0.85rem;
-            }
-        }
+      pre {
+        overflow-x: auto;
+        white-space: pre;
+        max-width: 100%;
+      }
+      
+      code {
+        font-size: 0.82rem;
+      }
+    }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="container">
-        <h1>Lexique</h1>
-        <p class="subtitle">Enter any database term to unpack its core meaning and code structure.</p>
+      <h1>Lexique</h1>
+      <p class="subtitle">Enter any database term to unpack its core meaning and code structure.</p>
 
-        <div class="search-box">
-            <input type="text" id="keyword-input" placeholder="e.g., ACID Properties, Left Join, B-Tree..." autocomplete="off">
-            <button id="submit-btn" onclick="fetchExplanation()">Explain</button>
+      <div class="search-box">
+        <input type="text" id="keyword-input" placeholder="e.g., ACID Properties, Left Join, B-Tree..." autocomplete="off" />
+        <button id="submit-btn" onclick="fetchExplanation()">Explain</button>
+      </div>
+
+      <div id="error-box" class="error-msg"></div>
+
+      <div id="output-box" class="output-card">
+        <h3>Concept Breakdown</h3>
+        <p id="explanation" class="explanation-text"></p>
+
+        <h3>Implementation / Demo</h3>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>
+            <code id="code-snippet"></code>
+          </pre>
         </div>
-
-        <div id="error-box" class="error-msg"></div>
-
-        <div id="output-box" class="output-card">
-            <h3>Concept Breakdown</h3>
-            <p id="explanation" class="explanation-text"></p>
-
-            <h3>Implementation / Demo</h3>
-            <div class="code-container">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code id="code-snippet"></code></pre>
-            </div>
-        </div>
+      </div>
     </div>
 
     <script>
-        // Trigger action on typing 'Enter' inside the input window
-        document.getElementById("keyword-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                fetchExplanation();
-            }
-        });
-
-        async function fetchExplanation() {
-            const inputElement = document.getElementById("keyword-input");
-            const btnElement = document.getElementById("submit-btn");
-            const outputBox = document.getElementById("output-box");
-            const errorBox = document.getElementById("error-box");
-            
-            const keyword = inputElement.value.trim();
-            
-            if (!keyword) return;
-
-            // UI Reset States
-            errorBox.style.display = "none";
-            outputBox.style.display = "none";
-            btnElement.disabled = true;
-            btnElement.innerText = "Analyzing...";
-
-            try {
-                const response = await fetch("/api/explain", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ keyword: keyword })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || "Something went wrong.");
-                }
-
-                // Populate and toggle visible components
-                document.getElementById("explanation").innerText = data.explanation;
-                document.getElementById("code-snippet").innerText = data.example_code;
-                outputBox.style.display = "block";
-
-            } catch (err) {
-                errorBox.innerText = err.message;
-                errorBox.style.display = "block";
-            } finally {
-                btnElement.disabled = false;
-                btnElement.innerText = "Explain";
-            }
+      // Trigger action on typing 'Enter' inside the input window
+      document.getElementById('keyword-input').addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+          fetchExplanation()
         }
-
-        function copyCode(btn) {
-            const codeText = document.getElementById("code-snippet").innerText;
-            navigator.clipboard.writeText(codeText).then(() => {
-                const originalText = btn.innerText;
-                btn.innerText = "Copied!";
-                setTimeout(() => { btn.innerText = originalText; }, 2000);
-            });
+      })
+      
+      async function fetchExplanation() {
+        const inputElement = document.getElementById('keyword-input')
+        const btnElement = document.getElementById('submit-btn')
+        const outputBox = document.getElementById('output-box')
+        const errorBox = document.getElementById('error-box')
+      
+        const keyword = inputElement.value.trim()
+      
+        if (!keyword) return
+      
+        // UI Reset States
+        errorBox.style.display = 'none'
+        outputBox.style.display = 'none'
+        btnElement.disabled = true
+        btnElement.innerText = 'Analyzing...'
+      
+        try {
+          const response = await fetch('/api/explain', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ keyword: keyword })
+          })
+      
+          const data = await response.json()
+      
+          if (!response.ok) {
+            throw new Error(data.error || 'Something went wrong.')
+          }
+      
+          // Populate and toggle visible components
+          document.getElementById('explanation').innerText = data.explanation
+          document.getElementById('code-snippet').innerText = data.example_code
+          outputBox.style.display = 'block'
+        } catch (err) {
+          errorBox.innerText = err.message
+          errorBox.style.display = 'block'
+        } finally {
+          btnElement.disabled = false
+          btnElement.innerText = 'Explain'
         }
+      }
+      
+      function copyCode(btn) {
+        const codeText = document.getElementById('code-snippet').innerText
+        navigator.clipboard.writeText(codeText).then(() => {
+          const originalText = btn.innerText
+          btn.innerText = 'Copied!'
+          setTimeout(() => {
+            btn.innerText = originalText
+          }, 2000)
+        })
+      }
     </script>
-</body>
+  </body>
 </html>
