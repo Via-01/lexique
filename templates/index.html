@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexique</title>
+    <style>
+        :root {
+            --bg-color: #0b090c;
+            --card-bg: rgba(26, 21, 32, 0.65);
+            --border-color: rgba(186, 154, 236, 0.2);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --pastel-purple: #cbb2ed;
+            --pastel-purple-hover: #bda0e6;
+            --code-bg: #14101a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--pastel-purple);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--pastel-purple);
+            box-shadow: 0 0 8px rgba(203, 178, 237, 0.2);
+        }
+
+        button {
+            background: var(--pastel-purple);
+            color: #14101a;
+            border: none;
+            border-radius: 8px;
+            padding: 0 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--pastel-purple-hover);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .output-card {
+            display: none;
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3 {
+            color: var(--pastel-purple);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .explanation-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .code-container {
+            position: relative;
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 8px;
+        }
+
+        pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #e2d5f3;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--pastel-purple);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+        }
+
+        .copy-btn:hover {
+            background: rgba(203, 178, 237, 0.2);
+        }
+
+        .error-msg {
+            color: #ff7676;
+            font-size: 0.9rem;
+            display: none;
+            margin-top: -12px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Lexique</h1>
+        <p class="subtitle">Enter any database term to unpack its core meaning and code structure.</p>
+
+        <div class="search-box">
+            <input type="text" id="keyword-input" placeholder="e.g., ACID Properties, Left Join, B-Tree..." autocomplete="off">
+            <button id="submit-btn" onclick="fetchExplanation()">Explain</button>
+        </div>
+
+        <div id="error-box" class="error-msg"></div>
+
+        <div id="output-box" class="output-card">
+            <h3>Concept Breakdown</h3>
+            <p id="explanation" class="explanation-text"></p>
+
+            <h3>Implementation / Demo</h3>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code id="code-snippet"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Trigger action on typing 'Enter' inside the input window
+        document.getElementById("keyword-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                fetchExplanation();
+            }
+        });
+
+        async function fetchExplanation() {
+            const inputElement = document.getElementById("keyword-input");
+            const btnElement = document.getElementById("submit-btn");
+            const outputBox = document.getElementById("output-box");
+            const errorBox = document.getElementById("error-box");
+            
+            const keyword = inputElement.value.trim();
+            
+            if (!keyword) return;
+
+            // UI Reset States
+            errorBox.style.display = "none";
+            outputBox.style.display = "none";
+            btnElement.disabled = true;
+            btnElement.innerText = "Analyzing...";
+
+            try {
+                const response = await fetch("/api/explain", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ keyword: keyword })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Something went wrong.");
+                }
+
+                // Populate and toggle visible components
+                document.getElementById("explanation").innerText = data.explanation;
+                document.getElementById("code-snippet").innerText = data.example_code;
+                outputBox.style.display = "block";
+
+            } catch (err) {
+                errorBox.innerText = err.message;
+                errorBox.style.display = "block";
+            } finally {
+                btnElement.disabled = false;
+                btnElement.innerText = "Explain";
+            }
+        }
+
+        function copyCode(btn) {
+            const codeText = document.getElementById("code-snippet").innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = "Copied!";
+                setTimeout(() => { btn.innerText = originalText; }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
