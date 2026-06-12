@@ -237,6 +237,47 @@
         pre::-webkit-scrollbar-thumb:hover {
             background: rgba(186, 154, 236, 0.5); /* Brightens slightly on hover */
         }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+                align-items: flex-start; /* Allows scrolling down if content is long */
+            }
+
+            /* Container scales smoothly on small screens */
+            .container {
+                padding: 20px;
+                width: 100%;
+                border-radius: 16px;
+                margin-top: 20px;
+            }
+
+            h1 {
+                font-size: 2rem; /* Slightly smaller title so it doesn't wrap awkwardly */
+            }
+
+            /* Stack the input box and button vertically on small mobile screens */
+            .search-box {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+                padding: 14px; /* Bigger tap target for thumbs */
+            }
+            
+            /* Ensure code blocks don't break the layout width */
+            pre {
+                padding: 12px;
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
