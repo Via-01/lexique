@@ -1,8 +1,13 @@
-import os
+import os  # noqa: F401
 import json
 from flask import Flask, render_template, request, jsonify
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
+
+load_dotenv() # This loads the variables from .env into your environment
+
+print(f"API KEY LOADED: {os.getenv('GEMINI_API_KEY')}")
 
 app = Flask(__name__)
 
@@ -13,7 +18,7 @@ client = genai.Client()
 def index():
     return render_template("index.html")
 
-@app.route("/api/explain", sorted_keys=False, methods=["POST"])
+@app.route("/api/explain", methods=["POST"])
 def explain_keyword():
     data = request.get_json() or {}
     keyword = data.get("keyword", "").strip()
