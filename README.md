@@ -1,8 +1,8 @@
 # Lexique 💜
 
-Lexique is an elegant, minimalist dictionary utility designed to simplify complex Database Management System (DBMS) concepts through clear explanations, structured definitions, and practical SQL implementations. Built with Flask and vanilla web technologies, the application leverages Google's Gemini API to generate concise, educational content while maintaining a lightweight and responsive user experience.
+Lexique is a minimalist AI-powered dictionary for Database Management System (DBMS) concepts. It transforms technical database terminology into clear explanations and practical SQL implementations, helping students and developers understand both theory and application in a single interface.
 
-The project follows a low-overhead architecture using Python, HTML5, CSS3, and JavaScript, and is deployed as a serverless application on Vercel.
+Built with Flask, vanilla HTML/CSS/JavaScript, and Google's Gemini API, the application is deployed as a serverless web application on Vercel.
 
 ## 🔗 Live Application
 
@@ -10,27 +10,65 @@ The project follows a low-overhead architecture using Python, HTML5, CSS3, and J
 
 ---
 
-## ✨ Features
+## 📸 Preview
 
-### AI-Powered Explanations
+### Home Interface
 
-Lexique uses Google's `gemini-2.5-flash` model to generate fast, accurate, and easy-to-understand explanations for DBMS concepts, SQL queries, normalization techniques, and database structures.
+![Lexique Home](assets/gp1.png)
 
-### Minimalist User Interface
+### Example: SQL Aggregate Function (SUM)
 
-The application features a French-inspired aesthetic with a carefully designed dark-mode experience, pastel-purple accents, glassmorphic elements, and subtle visual effects that prioritize readability and accessibility.
+![SUM Example](assets/gp2.png)
 
-### Structured Data Processing
+### Example: ACID Acronym Breakdown
 
-Responses from the AI backend follow strict JSON schemas, enabling deterministic parsing and reliable rendering on the frontend.
-
-### One-Click Copy Functionality
-
-Users can instantly copy generated SQL snippets, definitions, and explanations for use in assignments, projects, or practice environments.
+![ACID Properties Example](assets/gp3.png)
 
 ---
 
-## 🏗️ Technology Stack
+## ✨ Features
+
+### AI-Powered DBMS Explanations
+
+Uses Google's `gemini-2.5-flash` model to generate concise and understandable explanations for database concepts, SQL commands, normalization techniques, indexing strategies, transaction properties, and more.
+
+### Practical Implementation Examples
+
+Each concept is accompanied by a relevant SQL implementation or demonstration, helping bridge the gap between theory and practice.
+
+### Minimalist User Experience
+
+Designed with a clean dark-themed interface featuring subtle glassmorphic styling, a carefully curated purple color palette, and a distraction-free workflow.
+
+### One-Click Copy Functionality
+
+Generated SQL examples can be copied instantly for experimentation, assignments, or project work.
+
+### Structured Response Rendering
+
+Responses are generated through a predefined JSON schema, ensuring consistent formatting and reliable frontend rendering.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+User
+  ↓
+Flask Backend
+  ↓
+Gemini API
+  ↓
+Structured JSON Response
+  ↓
+Frontend Rendering
+```
+
+The application accepts a DBMS term from the user, sends it to the backend, generates a structured response using Gemini, and renders both the explanation and implementation example dynamically on the frontend.
+
+---
+
+## 🛠️ Technology Stack
 
 ### Backend
 
@@ -62,15 +100,20 @@ Users can instantly copy generated SQL snippets, definitions, and explanations f
 
 ```text
 ├── main.py
-├── .env                  # Local environment variables (Git ignored)
+├── .env
 ├── .gitignore
 ├── requirements.txt
 ├── vercel.json
 ├── README.md
+├── assets/
+│   ├── gp1.png
+│   ├── gp2.png
+│   ├── gp3.png
+│   └── gp4.png
 ├── static/
-│   └── bg.png            # Background asset
+│   └── bg.png
 └── templates/
-    └── index.html        # Frontend interface
+    └── index.html
 ```
 
 ---
@@ -82,69 +125,67 @@ Users can instantly copy generated SQL snippets, definitions, and explanations f
 Before running the project locally, ensure you have:
 
 * Python 3.x installed
-* UV package manager installed
+* UV installed
 
-### 1. Clone the Repository
+### Clone the Repository
 
 ```bash
 git clone <repository-url>
-cd test2
+cd <repository-name>
 ```
 
-### 2. Create a Virtual Environment
+### Create a Virtual Environment
 
 ```bash
 pip install uv
 uv venv
 ```
 
-### 3. Activate the Environment
+### Activate the Environment
 
-**macOS/Linux**
+#### macOS / Linux
 
 ```bash
 source .venv/bin/activate
 ```
 
-**Windows (PowerShell)**
+#### Windows PowerShell
 
 ```powershell
 .venv\Scripts\Activate.ps1
 ```
 
-**Windows (Command Prompt)**
+#### Windows Command Prompt
 
 ```cmd
 .venv\Scripts\activate.bat
 ```
 
-### 4. Install Dependencies
+### Install Dependencies
 
 ```bash
 uv pip install -r requirements.txt
 ```
 
-### 5. Configure Environment Variables
+### Configure Environment Variables
 
-Create a `.env` file in the project root and add your Gemini API key:
+Create a `.env` file in the project root:
 
 ```env
-GEMINI_API_KEY=your_actual_google_ai_studio_key_here
+GEMINI_API_KEY=your_google_ai_studio_api_key
 ```
 
-### 6. Run the Application
+### Run the Application
 
 ```bash
 python main.py
 ```
 
-Once the server starts, open:
+Then navigate to:
 
 ```text
 http://127.0.0.1:5000
 ```
-
-in your browser.
 
 ---
 
@@ -152,21 +193,20 @@ in your browser.
 
 Lexique is configured for deployment on Vercel using Python Serverless Functions.
 
-Before deploying:
+To deploy:
 
-1. Connect your GitHub repository to Vercel.
-2. Open your Vercel project settings.
-3. Add the `GEMINI_API_KEY` under **Environment Variables**.
-4. Deploy the project.
+1. Connect the repository to Vercel.
+2. Configure the `GEMINI_API_KEY` under Project Settings → Environment Variables.
+3. Trigger a deployment.
 
-The local `.env` file is protected by `.gitignore` and should never be committed to the repository.
+The local `.env` file is protected through `.gitignore` and should never be committed to source control.
 
 ---
 
 ## 👩‍💻 Author
 
 **Vaishnavi Bhan**
-Lead Developer
+Computer Science Graduate | AI & Full-Stack Development
 
 ---
 
